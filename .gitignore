@@ -1,0 +1,19 @@
+# Secret keys
+.env
+
+# Virtual environment
+env/
+
+# Editor temp files
+*.swp
+.DS_Store
+
+# Python cache
+__pycache__/
+
+# Audio files (Input, output, and chunks)
+*.mp3
+*.wav
+
+# Backup scripts (specific to the screenshot)
+main_Chinese.py
