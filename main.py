@@ -21,9 +21,9 @@ BAIDU_API_KEY = os.getenv('BAIDU_API_KEY')
 BAIDU_SECRET_KEY = os.getenv('BAIDU_SECRET_KEY')
 baidu_client = AipSpeech(BAIDU_APP_ID, BAIDU_API_KEY, BAIDU_SECRET_KEY)
 
-# DeepSeek LLM Configuration
-DEEPSEEK_API_KEY = os.getenv('DEEPSEEK_API_KEY')
-deepseek_client = OpenAI(api_key=DEEPSEEK_API_KEY, base_url="https://ark.cn-beijing.volces.com/api/v3")
+# doubao LLM Configuration
+DOUBAO_API_KEY = os.getenv('DOUBAO_API_KEY')
+doubao_client = OpenAI(api_key=DOUBAO_API_KEY, base_url="https://ark.cn-beijing.volces.com/api/v3")
 
 # Hardware & File Paths
 MIC_ID = "plughw:2,0" 
@@ -152,7 +152,7 @@ async def chat_with_memory_and_speak(user_input):
     tts_task = asyncio.create_task(tts_worker()) 
     
     try:
-        response = deepseek_client.chat.completions.create(
+        response = doubao_client.chat.completions.create(
             model="doubao-1-5-pro-32k-250115",
             messages=chat_history,
             temperature=0.9,
