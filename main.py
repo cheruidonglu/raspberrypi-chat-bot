@@ -35,7 +35,7 @@ TEMP_MP3 = "output.mp3"
 # ==========================================
 def listen():
     """Captures audio from the microphone and converts it to text via Baidu ASR."""
-    print("\n🎤 Coach Qiuqiu is listening... (Auto-stops after 1.2s of silence)")
+    print("\n🎤 球球教练正在听... (说完后停顿1.2秒会自动结束录音)")
     
     # Using SoX (rec) for intelligent silence detection
     cmd = (
@@ -48,13 +48,13 @@ def listen():
     if not os.path.exists(TEMP_WAV):
         return ""
         
-    print("✅ Finished listening, recognizing speech...")
+    print("✅ 听到你结束说话了，正在识别...")
     
     with open(TEMP_WAV, 'rb') as f:
         audio_data = f.read()
         
     # Language ID 1737 represents English
-    result = baidu_client.asr(audio_data, 'wav', 16000, {'dev_pid': 1737})
+    result = baidu_client.asr(audio_data, 'wav', 16000, {'dev_pid': 1537})
 
     if result['err_no'] == 0:
         print(f"\nYou said: {result['result'][0]}")
@@ -85,7 +85,7 @@ async def tts_worker():
             await communicate.save(mp3_name) 
             await audio_queue.put(mp3_name)  
         except Exception as e:
-            print(f"⚠️ TTS Synthesis failed: {e}")
+            print(f"⚠️ 文字转音频合成失败: {e}")
         finally:
             text_queue.task_done()
 
@@ -106,7 +106,7 @@ async def player_worker():
                 await asyncio.sleep(0.05)  
                 
         except Exception as e:
-            print(f"⚠️ Audio playback error: {file_path} - {e}")
+            print(f"⚠️ 音频播放错误: {file_path} - {e}")
             
         finally:
             audio_queue.task_done() 
@@ -131,12 +131,11 @@ chat_history = [
     {
         "role": "system", 
         "content": """
-        You are 'Coach Qiuqiu', a humorous and enthusiastic youth soccer coach. 
-        You are chatting with a young fan who has rich soccer knowledge.
-        Your tasks:
-        1. You can come up with football related multiple-choice questions (3 options) to test him/her.  
-        2. You can ask him/her what questions he/she has.
-        3. You can tell a short football story.
+        你是一个幽默、热情的足球知识对话机器人，名字叫‘球球’。你正在和一个小球迷进行语音聊天。
+        你的任务是：
+        1. 出足球相关的选择题,或者讲个足球故事。
+        2. 如果出题的话,请出选择题,包含3个选项,题目不要过于简单。
+        3. 回复不要超过60个字。
         """
     }
 ]
@@ -145,7 +144,7 @@ async def chat_with_memory_and_speak(user_input):
     """Handles LLM interaction and manages the concurrent TTS/Playback pipeline."""
     global chat_history
     chat_history.append({"role": "user", "content": user_input})
-    print("🧠 Coach Qiuqiu is thinking...")
+    print("🧠 球球教练正在急速思考...")
     
     # Initialize background workers
     player_task = asyncio.create_task(player_worker()) 
@@ -193,14 +192,14 @@ async def chat_with_memory_and_speak(user_input):
             chat_history.pop(1) 
             
     except Exception as e:
-        print(f"\nError occurred: {e}")
+        print(f"\n发生错误: {e}")
         await text_queue.put("STOP") 
         await tts_task
         await player_task
 
 def initialize_hardware():
     """Initializes Speaker and Microphone volumes to 85%"""
-    print("🔧 Initializing hardware volumes...")
+    print("🔧 初始化硬件的音量...")
     
     # 1. Set (Playback) volume to 85%
     os.system("amixer -c 2 sset PCM 85% --quiet")
@@ -208,7 +207,7 @@ def initialize_hardware():
     # 2. Set (Mic) volume to 85%
     os.system("amixer -c 2 sset Mic 85% --quiet")
     
-    print("✅ Speaker (PCM) and Microphone set to 80%.")
+    print("✅ 麦克风和扬声器音量设置到80%.")
 
 # ==========================================
 # 4. Main Loop
@@ -223,11 +222,11 @@ async def main():
     # Hardware initialization
     initialize_hardware()
 
-    print("⚽ Coach Qiuqiu is ready! (Streaming Mode Enabled)")
+    print("⚽ 足球机器人已进入【流式丝滑模式】")
     
     # Initial Welcome Message
     welcome_task = asyncio.create_task(player_worker())
-    await speak_to_queue("Hello there! I'm Coach Qiuqiu, your soccer assistant. Should we start with a soccer story or a quick quiz?", 0)
+    await speak_to_queue("你好月月！我是你的足球小助手球球，今天你想让我给你讲个足球故事，还是考考你？", 0)
     await audio_queue.put("STOP") 
     await welcome_task            
     
@@ -237,9 +236,9 @@ async def main():
         if not user_input: 
             continue
             
-        if any(word in user_input for word in ["Goodbye", "Exit", "再见", "退出"]):
+        if any(word in user_input for word in ["再见", "退出"]):
             exit_task = asyncio.create_task(player_worker())
-            await speak_to_queue("Great training today! Remember to practice on the field. See you next time!", 99)
+            await speak_to_queue("今天的训练很愉快！记得多去操场上跑跑哦，下次见！", 99)
             await audio_queue.put("STOP") 
             await exit_task               
             break

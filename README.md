@@ -1,65 +1,64 @@
-# Coach Qiuqiu: AI Soccer Assistant for Kids ⚽
+# 球球教练：少儿足球知识对话机器人 ⚽
 
-Coach Qiuqiu is an interactive, voice-based AI toy built on **Raspberry Pi 5**. It is designed to engage children with soccer knowledge through humorous conversations, multiple-choice quizzes, and inspiring soccer stories. 
+球球教练是一款基于 **树莓派 5 (Raspberry Pi 5)** 开发的交互式语音人工智能玩具。它旨在通过幽默的对话、足球知识问答以及励志的足球故事来吸引孩子们。
 
-By leveraging **Doubao LLM** for intelligence and **Microsoft Edge-TTS** for smooth, streaming voice output, Coach Qiuqiu provides a natural and "fluid" conversational experience[cite: 2].
-
----
-
-
-## ✨ Features
-* **Intelligent Conversation**: Powered by Doubao for a witty and enthusiastic coaching persona.
-* **Streaming Voice Output**: Uses a dual-worker pipeline (TTS & Player) to eliminate long pauses between sentences.
-* **Soccer Knowledge Quizzes**: Automatically generates multiple-choice questions to test the user's soccer IQ.
-* **Smart Mic Control**: Uses SoX for intelligent silence detection, automatically stopping the recording when the child finishes speaking.
-* **Hardware Optimized**: Includes automatic microphone gain control via `amixer` to prevent audio clipping.
+通过整合 **豆包大模型 (Doubao LLM)** 提供智能大脑，并使用 **微软 Edge-TTS** 实现流畅的流式语音输出，球球教练能够提供自然且“丝滑”的对话体验。
 
 ---
 
-## 🛠️ Hardware Requirements
-* **Raspberry Pi 5** (or Pi 4).
-* **USB Microphone** (or a Respeaker HAT).
-* **Speaker** (via 3.5mm jack or USB).
-* **Internet Connection** (for API calls).
+## ✨ 项目特性
+* **智能对话**：由豆包大模型提供支持，拥有风趣且热情的教练人设。
+* **流式语音输出**：采用双工人流水线（TTS 合成与音频播放并行的模式）架构，有效消除了句子之间的长停顿。
+* **足球知识竞赛**：自动生成单选题，全方位测试用户的足球知识储备。
+* **智能麦克风控制**：利用 SoX 实现智能静音检测，在孩子说完话后自动停止录音。
+* **硬件优化**：包含通过 `amixer` 实现的自动麦克风增益控制，防止音频录制过程中的爆音现象。
 
 ---
 
-## 📦 Software Prerequisites
-Before running the project, ensure you have the following system dependencies installed on your Raspberry Pi:
+## 🛠️ 硬件需求
+* **树莓派 5** (或树莓派 4)。
+* **USB 麦克风** (或 Respeaker 扩展板)。
+* **扬声器** (通过 3.5mm 音频口或 USB 连接)。
+* **互联网连接** (用于调用各平台 API)。
+
+---
+
+## 📦 软件环境准备
+在运行项目之前，请确保你的树莓派已安装以下系统依赖：
 
 ```bash
-# Update system and install Git
-sudo apt update && sudo apt install git -y 
+# 更新系统并安装 Git
+sudo apt update && sudo apt install git -y
 
-# Install SoX for audio recording
+# 安装用于音频录制的 SoX
 sudo apt install sox libsox-fmt-all -y
 ```
 
 ---
 
-## 🚀 Setup Guide
+## 🚀 快速上手指南
 
-### 1. Clone the Repository
+### 1. 克隆仓库
 ```bash
-git clone [https://github.com/cheruidonglu/raspberrypi-chat-bot.git]
+git clone https://github.com/cheruidonglu/raspberrypi-chat-bot.git
 cd raspberrypi-chat-bot
 ```
 
-### 2. Configure Environment Variables
-Create a `.env` file in the root directory to store your API keys securely. **Never share this file!**
+### 2. 配置环境变量
+在项目根目录创建一个 `.env` 文件，用于安全地存储你的 API 密钥。**切记：永远不要将此文件上传到 GitHub！**
 
 ```env
-# Baidu Speech API (STT)
-BAIDU_APP_ID=your_app_id
-BAIDU_API_KEY=your_api_key
-BAIDU_SECRET_KEY=your_secret_key
+# 百度语音识别 (STT) 密钥
+BAIDU_APP_ID=你的_APP_ID
+BAIDU_API_KEY=你的_API_KEY
+BAIDU_SECRET_KEY=你的_SECRET_KEY
 
-# Doubao API (LLM)
-DOUBAO_API_KEY=your_api_key
+# 豆包大模型 (LLM) 密钥
+DOUBAO_API_KEY=你的_API_KEY
 ```
 
-### 3. Install Python Dependencies
-It is recommended to use a virtual environment:
+### 3. 安装 Python 依赖库
+建议使用虚拟环境进行安装：
 
 ```bash
 python -m venv venv
@@ -69,25 +68,17 @@ pip install -r requirements.txt
 
 ---
 
-## 🎮 How to Use
-Simply run the main script to start the coach:
+## 🎮 如何使用
+执行主脚本即可启动球球教练：
 
 ```bash
 python main.py
 ```
 
-* **To Talk**: Wait for the 🎤 icon, speak, and stop for 1 second; the coach will automatically respond.
-* **To Exit**: Say "Goodbye" or "Exit" (in English or Chinese) to shut down the program safely.
+* **开始对话**：当终端出现 🎤 图标时即可说话，说完后停顿约 1 秒，教练会自动响应。
+* **退出程序**：说出“再见”或“退出”，即可安全关闭程序。
 
 ---
 
----
-
-## 🤝 Contributing
-Contributions, issues, and feature requests are welcome! Feel free to check the issues page if you want to help Coach Qiuqiu learn new soccer drills.
-
----
-
-## 📜 License
-[**MIT**]
-
+## 🤝 参与贡献
+我们非常欢迎任何形式的贡献、问题反馈（Issues）或功能建议！如果你想帮助球球教练学习新的足球战术，请随时在 Issues 页面留言。
